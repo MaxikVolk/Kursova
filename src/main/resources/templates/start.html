@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Start</title>
+</head>
+<body>
+
+<form th:method="GET" th:action="@{/address}">
+    <input type="submit" value="Go to all Addresses"/>
+</form>
+<br>
+
+<form th:method="GET" th:action="@{/address/newAddress}">
+    <input type="submit" value="Create new Address"/>
+</form>
+<br>
+
+<form th:method="GET" th:action="@{/street}">
+    <input type="submit" value="Go to all Streets"/>
+</form>
+<br>
+
+<form th:method="GET" th:action="@{/street/newStreet}">
+    <input type="submit" value="Create new Street"/>
+</form>
+<br>
+
+<form th:method="GET" th:action="@{/settlement}">
+    <input type="submit" value="Go to all Settlements"/>
+</form>
+<br>
+
+<form th:method="GET" th:action="@{/settlement/newSettlement}">
+    <input type="submit" value="Create new Settlement"/>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>Addresses</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+    <style>
+        button {
+            margin: 5px;
+        }
+        a:link {
+            color: black;
+        }
+
+        /* visited link */
+        a:visited {
+            color: black;
+        }
+
+        /* mouse over link */
+        a:hover {
+            color: black;
+        }
+
+        /* selected link */
+        a:active {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<div style="float: left;margin: 3px;">
+    <div class="dropdown" th:with="currentUrl=(${@currentUrlWithoutParam.apply('sort')})">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            Sorting type
+        </button>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" th:href="@{${currentUrl}(sort=settlementName)}">Settlement Name</a>
+            <a class="dropdown-item" th:href="@{${currentUrl}(sort=regionName)}">Region Name</a>
+            <a class="dropdown-item" th:href="@{${currentUrl}(sort=streetName)}">Street Name</a>
+            <a class="dropdown-item" th:href="@{${currentUrl}(sort=houseNumber)}">House Number</a>
+        </div>
+    </div>
+    <div class="dropdown" th:with="currentUrl=(${@currentUrlWithoutParam.apply('region')})">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonRegion"
+                data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            Region filter
+        </button>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonRegion">
+            <a class="dropdown-item" th:href="@{${currentUrl}}">No filter</a>
+            <div th:each="region : ${regions}">
+                <a class="dropdown-item" th:href="@{${currentUrl}(region=${region})}" th:text="${region}"></a>
+            </div>
+        </div>
+    </div>
+    <form th:method="GET" th:action="@{/address/sorted}" th:object="${filter}">
+        <label for="settlement"> Settlement filter: </label>
+        <input type="text" th:field="*{settlement}" id="settlement">
+        <br>
+
+        <label for="street"> Street filter: </label>
+        <input type="text" th:field="*{street}" id="street">
+        <br>
+
+        <input type="number" th:field="*{houseNumberMore}" id="houseNumberMore" style="width: 50px">
+        <label for="houseNumberLess"> < House Number < </label>
+        <input type="number" th:field="*{houseNumberLess}" id="houseNumberLess" style="width: 50px">
+        <br>
+
+        <input type="submit" class="btn btn-primary btn-dark btn-sm" value="Filter" style="margin: 5px 0 0 0">
+    </form>
+</div>
+<div>
+    <table>
+        <tr>
+            <th>Region</th>
+            <th>Settlement</th>
+            <th>Street</th>
+            <th>House</th>
+            <th>Flat</th>
+            <th>Buttons</th>
+        </tr>
+        <tr th:each="address: ${addresses}">
+            <th th:text="${address.getSettlement.getRegion}">Value</th>
+            <th><a th:text="${address.getSettlement.getName}" th:href="@{/settlement/{id} (id=${address.getSettlement.getId()})}">Value</a></th>
+            <th th:text="${address.getStreet.getName}">Value</th>
+            <th th:text="${address.getHouseNumber}">Value</th>
+            <th th:if="${address.getFlatNumber>0}" th:text="${address.getFlatNumber}">Value</th>
+            <th th:if="${address.getFlatNumber==0}"></th>
+            <th>
+                <a class="btn btn-sm btn-outline-secondary" th:href="@{/address/{id}/edit (id=${address.getId()})}">Edit</a>
+                <a class="btn btn-sm btn-outline-secondary" th:href="@{/address/{id}/delete (id=${address.getId()})}">Delete</a></th>
+        </tr>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+</body>
+</html>

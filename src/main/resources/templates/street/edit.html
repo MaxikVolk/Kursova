@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>Edit Street</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<div style="margin: 10px">
+    <form th:method="POST" th:action="@{/street/{id}/edit (id=${street.getId()})}" th:object="${street}">
+        <input type="hidden" name="_method" value="patch">
+
+        <label for="settlement">Choose settlement: </label>
+        <br>
+        <select th:field="*{settlement}" id="settlement" class="form-select form-select-sm"
+                style="width: 120px; float: left">
+            <option th:each="settlement : ${settlements}"
+                    th:value="${settlement.getId}"
+                    th:text="${settlement.getName}">Wireframe
+            </option>
+        </select>
+        <a href="http://localhost:8080/settlement/newSettlement" class="btn btn-outline-dark btn-sm" role="button"
+           target="_blank" rel="noreferrer noopener" style="margin: 0 0 5px 5px;">Create new Settlement</a>
+        <br/>
+
+        <label for="name">Enter Street name: </label>
+        <input type="text" th:field="*{name}" id="name">
+        <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
+        <br/>
+
+        <input type="submit" class="btn btn-primary btn-dark btn-sm" value="Create!"/>
+    </form>
+    <br>
+</div>
+</body>
+</html>

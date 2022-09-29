@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>Settlements</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+    <style>
+        button {
+        margin: 5px;
+    }
+    a:link {
+        color: black;
+    }
+
+    /* visited link */
+    a:visited {
+        color: black;
+    }
+
+    /* mouse over link */
+    a:hover {
+        color: black;
+    }
+
+    /* selected link */
+    a:active {
+        color: black;
+    }
+    </style>
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<div style="float: left;margin: 3px;">
+    <div class="dropdown" th:with="currentUrl=(${@currentUrlWithoutParam.apply('sort')})">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            Sorting type
+        </button>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" th:href="@{${currentUrl}(sort=settlementName)}">Settlement Name</a>
+            <a class="dropdown-item" th:href="@{${currentUrl}(sort=regionName)}">Region Name</a>
+        </div>
+    </div>
+    <div class="dropdown" th:with="currentUrl=(${@currentUrlWithoutParam.apply('region')})">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2"
+                data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            Region filter
+        </button>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+            <a class="dropdown-item" th:href="@{${currentUrl}}">No filter</a>
+            <div th:each="region:${regions}">
+                <a class="dropdown-item" th:href="@{${currentUrl}(region=${region})}" th:text="${region}">
+                    Region </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <table>
+        <tr>
+            <th>Region</th>
+            <th>Settlement</th>
+            <th>Buttons</th>
+        </tr>
+        <tr th:each="settlement: ${settlements}">
+            <th th:text="${settlement.getRegion}">Value</th>
+            <th><a th:text="${settlement.getName}" th:href="@{/settlement/{id} (id=${settlement.getId()})}">Value</a></th>
+            <th>
+                <a class="btn btn-sm btn-outline-secondary" th:href="@{/settlement/{id}/edit (id=${settlement.getId()})}">Edit</a>
+                <a class="btn btn-sm btn-outline-secondary" th:href="@{/settlement/{id}/delete (id=${settlement.getId()})}">Delete</a>
+            </th>
+        </tr>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+</body>
+</html>
