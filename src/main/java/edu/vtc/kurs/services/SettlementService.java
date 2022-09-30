@@ -6,12 +6,13 @@ import com.google.gson.JsonObject;
 import edu.vtc.kurs.dto.SettlementDTO;
 import edu.vtc.kurs.dto.SettlementInfoDTO;
 import edu.vtc.kurs.models.Settlement;
+import edu.vtc.kurs.models.SettlementPhoto;
+import edu.vtc.kurs.repositories.SettlementPhotoRepository;
 import edu.vtc.kurs.repositories.SettlementRepository;
 import edu.vtc.kurs.util.GoogleSearch;
 import edu.vtc.kurs.util.SerpApiSearchException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,12 +21,18 @@ import java.util.stream.Collectors;
 public class SettlementService {
     private final SettlementRepository settlementRepository;
 
-    public SettlementService(SettlementRepository settlementRepository) {
+    private final SettlementPhotoRepository settlementPhotoRepository;
+    private Settlement settlement;
+
+    public SettlementService(SettlementRepository settlementRepository, SettlementPhotoRepository settlementPhotoRepository) {
         this.settlementRepository = settlementRepository;
+        this.settlementPhotoRepository = settlementPhotoRepository;
     }
 
     public void save(SettlementDTO settlementDTO) {
-        settlementRepository.save(map(settlementDTO));
+        this.settlement = settlementRepository.save(map(settlementDTO));
+        SettlementPhotoService settlementPhotoService = new SettlementPhotoService(settlementPhotoRepository,this);
+        settlementPhotoService.start();
     }
 
     private Settlement map(SettlementDTO settlementDTO) {
@@ -86,15 +93,15 @@ public class SettlementService {
         settlementInfoDTO.setDescription(settlement.getDescription());
         settlementInfoDTO.setName(settlement.getName());
         settlementInfoDTO.setRegion(settlement.getRegion());
-        try {
-            settlementInfoDTO.setPhotos(getPhotos(settlement.getName(),settlementInfoDTO.getRegion()));
-        } catch (SerpApiSearchException e) {
-            e.printStackTrace();
+        List<String> photos = new ArrayList<>();
+        for(SettlementPhoto s: settlement.getSettlementPhotos()){
+            photos.add(s.getPhotoUrl());
         }
+        settlementInfoDTO.setPhotos(photos);
         return settlementInfoDTO;
     }
 
-    private List<String> getPhotos(String settlement, String region) throws SerpApiSearchException {
+    public List<String> getPhotos(String settlement, String region) throws SerpApiSearchException {
         Map<String, String> parameter = new HashMap<>();
         parameter.put("q","Beautiful "+settlement+", "+region+" region");
         parameter.put("gl", "ua");
@@ -116,5 +123,9 @@ public class SettlementService {
             if(count==5) return result;
         }
         return result;
+    }
+
+    public Settlement getSettlement() {
+        return settlement;
     }
 }

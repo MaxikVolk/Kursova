@@ -24,4 +24,6 @@ public class Settlement {
     @OneToMany(mappedBy = "settlement", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<Street> streets;
+    @OneToMany(mappedBy = "settlement", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SettlementPhoto> settlementPhotos;
 }
