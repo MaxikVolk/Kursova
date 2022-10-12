@@ -3,10 +3,8 @@ package edu.vtc.kurs.services;
 import edu.vtc.kurs.models.Settlement;
 import edu.vtc.kurs.models.SettlementPhoto;
 import edu.vtc.kurs.repositories.SettlementPhotoRepository;
-import edu.vtc.kurs.util.SerpApiSearchException;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
+import serpapi.SerpApiSearchException;
 
 @Service
 public class SettlementPhotoService extends Thread {

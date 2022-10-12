@@ -9,12 +9,10 @@ import edu.vtc.kurs.models.Settlement;
 import edu.vtc.kurs.models.SettlementPhoto;
 import edu.vtc.kurs.repositories.SettlementPhotoRepository;
 import edu.vtc.kurs.repositories.SettlementRepository;
-import edu.vtc.kurs.util.ApiSearch;
-import edu.vtc.kurs.util.SerpApiSearchException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import serpapi.GoogleSearch;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -102,8 +100,8 @@ public class SettlementService {
         return settlementInfoDTO;
     }
 
-    public List<String> getPhotos(String settlement, String region) throws SerpApiSearchException{
-        ApiSearch search = new ApiSearch(setParams(settlement, region));
+    public List<String> getPhotos(String settlement, String region)throws serpapi.SerpApiSearchException {
+        GoogleSearch search = new GoogleSearch(setParams(settlement,region));
         List<String> links = new ArrayList<>();
         JsonObject results = search.getJson();
         JsonArray images_results = results.getAsJsonArray("images_results");
