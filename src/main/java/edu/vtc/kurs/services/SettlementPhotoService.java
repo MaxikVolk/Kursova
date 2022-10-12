@@ -6,6 +6,8 @@ import edu.vtc.kurs.repositories.SettlementPhotoRepository;
 import edu.vtc.kurs.util.SerpApiSearchException;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 @Service
 public class SettlementPhotoService extends Thread {
     private final SettlementPhotoRepository settlementPhotoRepository;

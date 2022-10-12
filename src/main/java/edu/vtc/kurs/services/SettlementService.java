@@ -9,11 +9,12 @@ import edu.vtc.kurs.models.Settlement;
 import edu.vtc.kurs.models.SettlementPhoto;
 import edu.vtc.kurs.repositories.SettlementPhotoRepository;
 import edu.vtc.kurs.repositories.SettlementRepository;
-import edu.vtc.kurs.util.GoogleSearch;
+import edu.vtc.kurs.util.ApiSearch;
 import edu.vtc.kurs.util.SerpApiSearchException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -101,28 +102,34 @@ public class SettlementService {
         return settlementInfoDTO;
     }
 
-    public List<String> getPhotos(String settlement, String region) throws SerpApiSearchException {
-        Map<String, String> parameter = new HashMap<>();
-        parameter.put("q","Beautiful "+settlement+", "+region+" region");
-        parameter.put("gl", "ua");
-        parameter.put("save", "active");
-        parameter.put("filter", "0");
-        parameter.put("tbm", "isch");
-        parameter.put("ijn", "0");
-        parameter.put("api_key", "c8392fe34248fc13ec1ff1dbe043498397710c423f23003ac5b266e7df9459ef");
-
-        GoogleSearch search = new GoogleSearch(parameter);
-        List<String> result = new ArrayList<>();
+    public List<String> getPhotos(String settlement, String region) throws SerpApiSearchException{
+        ApiSearch search = new ApiSearch(setParams(settlement, region));
+        List<String> links = new ArrayList<>();
         JsonObject results = search.getJson();
         JsonArray images_results = results.getAsJsonArray("images_results");
         int count=0;
         for(JsonElement s : images_results){
             count++;
             JsonObject s1 = (JsonObject) s;
-            result.add(s1.getAsJsonPrimitive("original").getAsString());
-            if(count==5) return result;
+            links.add(s1.getAsJsonPrimitive("original").getAsString());
+            if(count==5) return links;
         }
-        return result;
+        return links;
+    }
+
+    private static Map<String, String> setParams(String settlement, String region) {
+        Map<String, String> parameter = new HashMap<>();
+        parameter.put("q","Beautiful "+ settlement +", "+ region +" region");
+        parameter.put("gl", "ua");
+        parameter.put("save", "active");
+        parameter.put("filter", "0");
+        parameter.put("tbm", "isch");
+        parameter.put("num","5");
+        parameter.put("source", "java");
+        parameter.put("api_key", "c21a84a3dcfcfbb56689ac4baa5ea27fab4721eb32e0bf0d5a2c094272df94eb");
+        parameter.put("engine", "google");
+        parameter.put("output", "json");
+        return parameter;
     }
 
     public Settlement getSettlement() {

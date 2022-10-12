@@ -12,25 +12,20 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 public class SerpApiHttpClient {
-    private int httpConnectionTimeout;
+    private final int httpConnectionTimeout = 6000;
     private int httpReadTimeout;
-
-    public static String BACKEND = "https://serpapi.com";
 
     private static final Gson gson = new Gson();
 
-    public String path;
+    public String path = "/search";
 
-    public SerpApiHttpClient(String path) {
-        this.path = path;
-    }
 
     protected HttpURLConnection buildConnection(String path, Map<String, String> parameter) throws SerpApiSearchException {
         HttpURLConnection con;
         try {
             allowHTTPS();
             String query = ParameterStringBuilder.getParamsString(parameter);
-            URL url = new URL(BACKEND + path + "?" + query);
+            URL url = new URL("https://serpapi.com" + path + "?" + query);
             con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
         } catch (IOException e) {
@@ -56,8 +51,7 @@ public class SerpApiHttpClient {
     }
 
     private void allowHTTPS() throws NoSuchAlgorithmException, KeyManagementException {
-        TrustManager[] trustAllCerts;
-        trustAllCerts = new TrustManager[]{new X509TrustManager() {
+        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
             public X509Certificate[] getAcceptedIssuers() {
                 return null;
             }
@@ -74,44 +68,27 @@ public class SerpApiHttpClient {
         sc.init(null, trustAllCerts, new java.security.SecureRandom());
         HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 
-        // Create all-trusting host name verifier
-        HostnameVerifier allHostsValid = new HostnameVerifier() {
-            public boolean verify(String hostname, SSLSession session) {
-                return true;
-            }
-        };
-        // Install the all-trusting host verifier
+        HostnameVerifier allHostsValid = (hostname, session) -> true;
         HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-        /*
-         * end of the fix
-         */
     }
     public String getResults(Map<String, String> parameter) throws SerpApiSearchException {
         HttpURLConnection con = buildConnection(this.path, parameter);
-
-        // Get HTTP status
-        int statusCode = -1;
-        // Hold response stream
-        InputStream is = null;
-        // Read buffer
-        BufferedReader in = null;
+        int statusCode;
+        InputStream is;
+        BufferedReader in;
         try {
             statusCode = con.getResponseCode();
-
             if (statusCode == 200) {
                 is = con.getInputStream();
             } else {
                 is = con.getErrorStream();
             }
-
-            Reader reader = new InputStreamReader(is);
-            in = new BufferedReader(reader);
+            in = new BufferedReader(new InputStreamReader(is));
         } catch (IOException e) {
             throw new SerpApiSearchException(e);
         }
-
         String inputLine;
-        StringBuffer content = new StringBuffer();
+        StringBuilder content = new StringBuilder();
         try {
             while ((inputLine = in.readLine()) != null) {
                 content.append(inputLine);
@@ -120,10 +97,7 @@ public class SerpApiHttpClient {
         } catch (IOException e) {
             throw new SerpApiSearchException(e);
         }
-
-        // Disconnect
         con.disconnect();
-
         if (statusCode != 200) {
             triggerSerpApiClientException(content.toString());
         }
@@ -135,15 +109,13 @@ public class SerpApiHttpClient {
             JsonObject element = gson.fromJson(content, JsonObject.class);
             errorMessage = element.get("error").getAsString();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new AssertionError("invalid response format: " + content);
         }
         throw new SerpApiSearchException(errorMessage);
     }
     public int getHttpConnectionTimeout() {
         return httpConnectionTimeout;
-    }
-    public void setHttpConnectionTimeout(int httpConnectionTimeout) {
-        this.httpConnectionTimeout = httpConnectionTimeout;
     }
     public int getHttpReadTimeout() {
         return httpReadTimeout;
