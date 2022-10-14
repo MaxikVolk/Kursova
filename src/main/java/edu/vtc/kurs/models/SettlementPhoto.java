@@ -8,6 +8,9 @@ import lombok.ToString;
 import javax.persistence.*;
 
 
+/**
+ * The type Settlement photo.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

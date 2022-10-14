@@ -1,12 +1,19 @@
 package edu.vtc.kurs.exceptions;
 
-public class Status404StreetNotFoundException extends CustomException{
+/**
+ * The type Status 404 street not found exception.
+ */
+public class Status404StreetNotFoundException extends CustomException {
+    /**
+     * The constant CODE.
+     */
     public static final int CODE = 404;
 
-    public Status404StreetNotFoundException(String message) {
-        super(CODE,message);
-    }
+
+    /**
+     * Instantiates a new Status 404 street not found exception.
+     */
     public Status404StreetNotFoundException() {
-        super(CODE,"Street not found");
+        super(CODE, "Street not found");
     }
 }

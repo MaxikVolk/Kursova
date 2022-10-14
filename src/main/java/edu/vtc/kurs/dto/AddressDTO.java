@@ -1,14 +1,17 @@
 package edu.vtc.kurs.dto;
 
 import edu.vtc.kurs.models.Settlement;
-import edu.vtc.kurs.models.Street;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 
+/**
+ * The type Address dto.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

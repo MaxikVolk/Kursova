@@ -7,6 +7,9 @@ import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.Min;
 
+/**
+ * The type Filter dto.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

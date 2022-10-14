@@ -1,9 +1,9 @@
 package edu.vtc.kurs.controllers;
 
-import edu.vtc.kurs.dto.FilterDTO;
 import edu.vtc.kurs.dto.SettlementDTO;
 import edu.vtc.kurs.models.Settlement;
 import edu.vtc.kurs.services.SettlementService;
+import org.springframework.boot.Banner;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,9 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
@@ -26,20 +23,22 @@ public class SettlementController {
     }
 
     @GetMapping()
-    public String getSettlements(Model model){
+    public String getSettlements(Model model) {
         model.addAttribute("settlements", settlementService.findAll());
         model.addAttribute("regions", settlementService.findAll().stream()
                 .map(Settlement::getRegion).collect(Collectors.toSet()));
         return "settlement/all";
     }
+
     @GetMapping("/{id:\\d+}")
-    public String getSettlement(@PathVariable long id,Model model){
-        model.addAttribute("settlement",settlementService.getSettlement(id));
+    public String getSettlement(@PathVariable long id, Model model) {
+        model.addAttribute("settlement", settlementService.getSettlement(id));
         return "settlement/settlement";
     }
+
     @GetMapping("/sorted")
-    public String getSettlements(Model model,@RequestParam @Nullable String sort,@RequestParam @Nullable String region){
-        model.addAttribute("settlements", settlementService.findSortedAndFiltered(sort,region));
+    public String getSettlements(Model model, @RequestParam @Nullable String sort, @RequestParam @Nullable String region) {
+        model.addAttribute("settlements", settlementService.findSortedAndFiltered(sort, region));
         model.addAttribute("regions", settlementService.findAll().stream()
                 .map(Settlement::getRegion).collect(Collectors.toSet()));
         return "settlement/all";
@@ -50,6 +49,7 @@ public class SettlementController {
         model.addAttribute("settlement", new SettlementDTO());
         return "settlement/newSettlement";
     }
+
     @PostMapping("/newSettlement")
     public String newSettlement(@ModelAttribute("settlement") @Valid SettlementDTO settlementDTO,
                                 BindingResult bindingResult) {
@@ -59,22 +59,26 @@ public class SettlementController {
         settlementService.save(settlementDTO);
         return "redirect:/settlement";
     }
+
     @GetMapping("/{id}/edit")
-    public String editSettlement( @PathVariable long id, Model model) {
+    public String editSettlement(@PathVariable long id, Model model) {
         model.addAttribute("settlement", settlementService.findById(id));
         return "settlement/edit";
     }
+
     @PatchMapping("/{id}/edit")
     public String editSettlement(@PathVariable long id, @Valid SettlementDTO settlementDTO,
-                                 BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            return "/"+id+"/edit";
+                                 BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("settlement", settlementService.findById(id));
+            return "settlement/edit";
         }
-        settlementService.edit(id,settlementDTO);
+        settlementService.edit(id, settlementDTO);
         return "redirect:/settlement";
     }
+
     @GetMapping("/{id}/delete")
-    public String deleteSettlement(@PathVariable long id){
+    public String deleteSettlement(@PathVariable long id) {
         settlementService.deleteById(id);
         return "redirect:/settlement";
     }

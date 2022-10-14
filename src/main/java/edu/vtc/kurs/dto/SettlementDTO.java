@@ -2,8 +2,12 @@ package edu.vtc.kurs.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotEmpty;
 
+/**
+ * The type Settlement dto.
+ */
 @Data
 @NoArgsConstructor
 public class SettlementDTO {

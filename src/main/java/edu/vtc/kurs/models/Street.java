@@ -7,6 +7,9 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * The type Street.
+ */
 @Data
 @ToString
 @NoArgsConstructor

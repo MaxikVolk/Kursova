@@ -1,10 +1,16 @@
 package edu.vtc.kurs.models;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * The type Settlement.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,5 +31,6 @@ public class Settlement {
     @ToString.Exclude
     private List<Street> streets;
     @OneToMany(mappedBy = "settlement", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<SettlementPhoto> settlementPhotos;
 }

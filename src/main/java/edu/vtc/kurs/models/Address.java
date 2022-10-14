@@ -6,6 +6,9 @@ import lombok.ToString;
 
 import javax.persistence.*;
 
+/**
+ * The type Address.
+ */
 @Data
 @ToString
 @NoArgsConstructor
