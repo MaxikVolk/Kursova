@@ -11,9 +11,9 @@ import javax.validation.constraints.NotEmpty;
 @Data
 @NoArgsConstructor
 public class SettlementDTO {
-    @NotEmpty(message = "should not be empty")
+    @NotEmpty(message = "name should not be empty")
     private String name;
-    @NotEmpty(message = "should not be empty")
+    @NotEmpty(message = "region should not be empty")
     private String region;
     private String description;
 }

@@ -13,7 +13,6 @@ import javax.persistence.*;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 @Entity
 @Table(name = "settlement_photos")

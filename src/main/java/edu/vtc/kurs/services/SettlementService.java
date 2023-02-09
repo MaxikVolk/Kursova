@@ -47,7 +47,7 @@ public class SettlementService {
         parameter.put("tbm", "isch");
         parameter.put("num", "5");
         parameter.put("source", "java");
-        parameter.put("api_key", "6b2cd9f777cafbb60aca57895565439d61db7b4e9c66796ce5cd8c8c95d7d562");
+        parameter.put("api_key", "f355947ef488f131f8ad83d1a36d9a3a353c4cd8bdb8df29ed70017b7a8057b8");
         parameter.put("engine", "google");
         parameter.put("output", "json");
         return parameter;
@@ -138,6 +138,7 @@ public class SettlementService {
      */
     public List<Settlement> findSortedAndFiltered(String sort, String region) {
         List<Settlement> settlements;
+
         if (sort == null) {
             settlements = findAll();
         } else {

@@ -3,7 +3,6 @@ package edu.vtc.kurs.controllers;
 import edu.vtc.kurs.dto.SettlementDTO;
 import edu.vtc.kurs.models.Settlement;
 import edu.vtc.kurs.services.SettlementService;
-import org.springframework.boot.Banner;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +10,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -30,7 +31,7 @@ public class SettlementController {
         return "settlement/all";
     }
 
-    @GetMapping("/{id:\\d+}")
+    @GetMapping("/{id}")
     public String getSettlement(@PathVariable long id, Model model) {
         model.addAttribute("settlement", settlementService.getSettlement(id));
         return "settlement/settlement";

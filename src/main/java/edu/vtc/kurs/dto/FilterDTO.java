@@ -11,7 +11,6 @@ import javax.validation.constraints.Min;
  * The type Filter dto.
  */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class FilterDTO {
     @Nullable
@@ -22,8 +21,8 @@ public class FilterDTO {
     private String settlement;
     @Nullable
     private String street;
-    @Min(value = 1)
-    private int houseNumberMore;
     @Min(value = 0)
+    private int houseNumberMore;
+    @Min(value = 1)
     private int houseNumberLess;
 }

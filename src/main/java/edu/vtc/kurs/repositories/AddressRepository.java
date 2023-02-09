@@ -4,6 +4,9 @@ import edu.vtc.kurs.models.Address;
 import edu.vtc.kurs.models.Settlement;
 import edu.vtc.kurs.models.Street;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 /**
  * The interface Address repository.

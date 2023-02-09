@@ -3,6 +3,7 @@ package edu.vtc.kurs.services;
 import edu.vtc.kurs.models.Settlement;
 import edu.vtc.kurs.models.SettlementPhoto;
 import edu.vtc.kurs.repositories.SettlementPhotoRepository;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import serpapi.SerpApiSearchException;
 
@@ -26,7 +27,7 @@ public class SettlementPhotoService extends Thread {
         this.settlementService = settlementService;
     }
     /**
-     * Run another thread where we are saving settlement photos from google search
+     * Run another thread where we are saving settlement photos from Google search
      */
     @Override
     public void run() {

@@ -1,7 +1,7 @@
 package edu.vtc.kurs.services;
 
 import edu.vtc.kurs.dto.AddressDTO;
-import edu.vtc.kurs.exceptions.Status403WrongStreetException;
+import edu.vtc.kurs.exceptions.Status410WrongStreetException;
 import edu.vtc.kurs.exceptions.Status404StreetNotFoundException;
 import edu.vtc.kurs.models.Address;
 import edu.vtc.kurs.repositories.AddressRepository;
@@ -44,9 +44,9 @@ public class AddressService {
      * @param addressDTO dto which we want to map
      * @return Mapped address
      * @throws Status404StreetNotFoundException the status 404 street not found exception
-     * @throws Status403WrongStreetException    the status 403 wrong street exception
+     * @throws Status410WrongStreetException    the status 403 wrong street exception
      */
-    public Address map(AddressDTO addressDTO) throws Status404StreetNotFoundException, Status403WrongStreetException {
+    public Address map(AddressDTO addressDTO) throws Status404StreetNotFoundException, Status410WrongStreetException {
         Address address = new Address();
         address.setSettlement(addressDTO.getSettlement());
         address.setFlatNumber(addressDTO.getFlatNumber());
@@ -56,7 +56,7 @@ public class AddressService {
             throw new Status404StreetNotFoundException();
         }
         if (address.getStreet().getSettlement().getId() != address.getSettlement().getId()) {
-            throw new Status403WrongStreetException();
+            throw new Status410WrongStreetException();
         }
         return address;
     }
@@ -77,10 +77,10 @@ public class AddressService {
      * @param addressDTO new data about address which we want to change
      * @param errors     errors variable
      * @throws Status404StreetNotFoundException the status 404 street not found exception
-     * @throws Status403WrongStreetException    the status 403 wrong street exception
+     * @throws Status410WrongStreetException    the status 403 wrong street exception
      */
     @Transactional
-    public void save(long id, AddressDTO addressDTO, Errors errors) throws Status404StreetNotFoundException, Status403WrongStreetException {
+    public void save(long id, AddressDTO addressDTO, Errors errors) throws Status404StreetNotFoundException, Status410WrongStreetException {
         Address address = map(addressDTO);
         addressValidator.validate(address, errors);
         if (errors.hasErrors()) {

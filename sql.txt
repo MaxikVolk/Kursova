@@ -1,0 +1,51 @@
+create table settlement
+(
+    id          integer generated always as identity
+        primary key,
+    name        varchar not null,
+    region      varchar not null,
+    description varchar
+);
+
+alter table settlement
+    owner to postgres;
+
+create table street
+(
+    id            integer generated always as identity
+        primary key,
+    name          varchar not null,
+    settlement_id integer
+        references settlement
+);
+
+alter table street
+    owner to postgres;
+
+create table address
+(
+    id            integer generated always as identity
+        primary key,
+    settlement_id integer
+        references settlement,
+    street_id     integer
+        references street,
+    house_number  integer not null,
+    flat_number   integer default 0
+);
+
+alter table address
+    owner to postgres;
+
+create table settlement_photos
+(
+    id            integer generated always as identity
+        primary key,
+    settlement_id integer
+        references settlement,
+    photo_url     varchar
+);
+
+alter table settlement_photos
+    owner to postgres;
+

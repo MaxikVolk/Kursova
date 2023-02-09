@@ -16,14 +16,12 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddressDTO {
-
     private Settlement settlement;
-    @NotEmpty(message = "should not be empty")
     private String street;
-    @Max(value = 10000, message = "should be less than 10000")
-    @Min(value = 1, message = "should be more than 0")
+    @Max(value = 10000, message = "House number should be less than 10000")
+    @Min(value = 1, message = "House number should be more than 0")
     private int houseNumber;
-    @Max(value = 10000, message = "should be less than 10000")
-    @Min(value = 0, message = "should be more than 0")
+    @Max(value = 10000, message = "Flat number should be less than 10000")
+    @Min(value = 0, message = "Flat number should be more than 0")
     private int flatNumber;
 }

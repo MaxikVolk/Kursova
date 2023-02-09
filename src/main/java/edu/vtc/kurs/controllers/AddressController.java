@@ -2,7 +2,7 @@ package edu.vtc.kurs.controllers;
 
 import edu.vtc.kurs.dto.AddressDTO;
 import edu.vtc.kurs.dto.FilterDTO;
-import edu.vtc.kurs.exceptions.Status403WrongStreetException;
+import edu.vtc.kurs.exceptions.Status410WrongStreetException;
 import edu.vtc.kurs.exceptions.Status404StreetNotFoundException;
 import edu.vtc.kurs.models.Address;
 import edu.vtc.kurs.models.Settlement;
@@ -78,7 +78,7 @@ public class AddressController {
             model.addAttribute("settlements", settlementService.findAll());
             bindingResult.rejectValue("street", "404", "This street is not found");
             return "address/newAddress";
-        } catch (Status403WrongStreetException e) {
+        } catch (Status410WrongStreetException e) {
             model.addAttribute("settlements", settlementService.findAll());
             bindingResult.rejectValue("street", "403", "There isn`t such street in this settlement");
             return "address/newAddress";
@@ -114,7 +114,7 @@ public class AddressController {
             model.addAttribute("address", addressService.findById(id));
             bindingResult.rejectValue("street", "404", "This street is not found");
             return "address/edit";
-        } catch (Status403WrongStreetException e) {
+        } catch (Status410WrongStreetException e) {
             model.addAttribute("settlements", settlementService.findAll());
             bindingResult.rejectValue("street", "403", e.getMessage());
             return "address/newAddress";
@@ -132,4 +132,5 @@ public class AddressController {
         addressService.delete(id);
         return "redirect:/address";
     }
+
 }
